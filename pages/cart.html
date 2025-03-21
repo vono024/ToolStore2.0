@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Корзина</title>
-  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/styles.css" />
 </head>
 <body>
 <header>
   <nav>
     <h1>Магазин Інструментів</h1>
-    <ul>
+    <ul id="nav-links">
       <li><a href="index.html">Головна</a></li>
-      <li><a href="admin.html">Адмін</a></li>
-      <li><a href="login.html">Авторизація</a></li>
+      <li><a href="login.html" id="login-link">Авторизація</a></li>
     </ul>
   </nav>
 </header>
@@ -21,7 +20,6 @@
 <div class="container">
   <h2>Ваша корзина</h2>
   <div class="cart" id="cart-items">
-    <!-- Додавані товари -->
   </div>
   <p class="cart-total">Загальна сума: <span id="total-price">0 грн</span></p>
   <button class="checkout-btn" onclick="checkout()">Оформити замовлення</button>
@@ -32,5 +30,26 @@
 </footer>
 
 <script type="module" src="../js/cart.js"></script>
+
+<script>
+  const cookies = document.cookie.split(";").map(c => c.trim());
+  const isAdmin = cookies.find(c => c.startsWith("admin=loggedin"));
+  const nav = document.getElementById("nav-links");
+
+  if (isAdmin) {
+    const adminItem = document.createElement("li");
+    adminItem.innerHTML = `<a href="admin.html">Адмін</a>`;
+    nav.insertBefore(adminItem, document.getElementById("login-link"));
+
+    const logoutItem = document.getElementById("login-link");
+    logoutItem.innerHTML = `<a href="#" onclick="logout()">Вийти</a>`;
+  }
+
+  function logout() {
+    document.cookie = "admin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    alert("Ви вийшли з адмін-панелі.");
+    location.reload();
+  }
+</script>
 </body>
 </html>
