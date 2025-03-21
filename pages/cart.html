@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Корзина</title>
   <link rel="stylesheet" href="../css/styles.css">
-  <link rel="stylesheet" href="../css/responsive.css">
 </head>
 <body>
 <header>
@@ -22,6 +21,7 @@
 <div class="container">
   <h2>Ваша корзина</h2>
   <div class="cart" id="cart-items">
+    <!-- Додавані товари -->
   </div>
   <p class="cart-total">Загальна сума: <span id="total-price">0 грн</span></p>
   <button class="checkout-btn" onclick="checkout()">Оформити замовлення</button>
@@ -31,6 +31,6 @@
   <p>&copy; 2025 Магазин Інструментів</p>
 </footer>
 
-<script src="../js/cart.js"></script>
+<script type="module" src="../js/cart.js"></script>
 </body>
 </html>

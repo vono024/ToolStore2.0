@@ -22,7 +22,9 @@
 
 <div class="container">
   <h2>Каталог інструментів</h2>
+  <input type="text" id="search" placeholder="Пошук інструменту..." onkeyup="searchProducts()">
   <div class="product-list" id="product-list">
+    <!-- Товари завантажуються через JS -->
   </div>
 </div>
 
@@ -30,6 +32,6 @@
   <p>&copy; 2025 Магазин Інструментів</p>
 </footer>
 
-<script src="../js/main.js"></script>
+<script type="module" src="../js/main.js"></script>
 </body>
 </html>
