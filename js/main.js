@@ -19,12 +19,12 @@ function renderProductList(productArray) {
         const card = document.createElement("div");
         card.className = "product";
         card.innerHTML = `
-            <img src="${tool.image}" alt="${tool.name}">
-            <h3>${tool.name}</h3>
-            <p>${tool.description}</p>
-            <p class="price">${tool.price} грн</p>
-            <button onclick="addToCart(${tool.id})">Додати в корзину</button>
-        `;
+      <img src="${tool.image}" alt="${tool.name}">
+      <h3>${tool.name}</h3>
+      <p>${tool.description}</p>
+      <p class="price">${tool.price} грн</p>
+      <button onclick="addToCart(${tool.id})">Додати в корзину</button>
+    `;
         productList.appendChild(card);
     });
 }

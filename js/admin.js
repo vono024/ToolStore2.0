@@ -1,7 +1,6 @@
 import tools from "./data.js";
 
 let customTools = JSON.parse(localStorage.getItem("customTools")) || [];
-
 const allTools = [...tools, ...customTools];
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -47,15 +46,15 @@ function renderTable() {
     const list = document.getElementById("admin-product-list");
     list.innerHTML = "";
 
-    [...tools, ...customTools].forEach((tool, index) => {
+    [...tools, ...customTools].forEach(tool => {
         const row = document.createElement("tr");
         row.innerHTML = `
-            <td>${tool.name}</td>
-            <td>${tool.price} грн</td>
-            <td>
-                <button class="admin-btn" onclick="deleteProduct(${tool.id})">Видалити</button>
-            </td>
-        `;
+      <td>${tool.name}</td>
+      <td>${tool.price} грн</td>
+      <td>
+        <button class="admin-btn" onclick="deleteProduct(${tool.id})">Видалити</button>
+      </td>
+    `;
         list.appendChild(row);
     });
 }
