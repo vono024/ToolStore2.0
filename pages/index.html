@@ -6,6 +6,14 @@
   <title>Магазин Інструментів</title>
   <link rel="stylesheet" href="../css/styles.css" />
   <link rel="stylesheet" href="../css/responsive.css" />
+  <style>
+    .no-results {
+      font-size: 18px;
+      color: #777;
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
 <header>
@@ -21,9 +29,8 @@
 
 <div class="container">
   <h2>Каталог інструментів</h2>
-  <input type="text" id="search" placeholder="Пошук інструменту..." onkeyup="searchProducts()"/>
-  <div class="product-list" id="product-list">
-      </div>
+  <input type="text" id="search" placeholder="Пошук інструменту...">
+  <div class="product-list" id="product-list"></div>
 </div>
 
 <footer>
@@ -31,7 +38,6 @@
 </footer>
 
 <script type="module" src="../js/main.js"></script>
-
 <script>
   const cookies = document.cookie.split(";").map(c => c.trim());
   const isAdmin = cookies.find(c => c.startsWith("admin=loggedin"));
@@ -48,7 +54,6 @@
 
   function logout() {
     document.cookie = "admin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    alert("Ви вийшли з адмін-панелі.");
     location.reload();
   }
 </script>

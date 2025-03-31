@@ -6,14 +6,35 @@ const allTools = [...tools, ...customTools];
 
 document.addEventListener("DOMContentLoaded", () => {
     const productList = document.getElementById("product-list");
+    const searchInput = document.getElementById("search");
+
     if (productList) {
         renderProductList(allTools);
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener("input", () => {
+            const query = searchInput.value.toLowerCase().trim();
+
+            const filtered = allTools.filter(tool =>
+                tool.name.toLowerCase().includes(query) ||
+                tool.category.toLowerCase().includes(query) ||
+                tool.description.toLowerCase().includes(query)
+            );
+
+            renderProductList(filtered);
+        });
     }
 });
 
 function renderProductList(productArray) {
     const productList = document.getElementById("product-list");
     productList.innerHTML = "";
+
+    if (productArray.length === 0) {
+        productList.innerHTML = `<p class="no-results">Нічого не знайдено 😕</p>`;
+        return;
+    }
 
     productArray.forEach(tool => {
         const card = document.createElement("div");
@@ -29,14 +50,5 @@ function renderProductList(productArray) {
         productList.appendChild(card);
     });
 }
-
-window.searchProducts = function () {
-    const query = document.getElementById("search").value.toLowerCase();
-    const filtered = allTools.filter(tool =>
-        tool.name.toLowerCase().includes(query) ||
-        tool.category.toLowerCase().includes(query)
-    );
-    renderProductList(filtered);
-};
 
 window.addToCart = addToCart;
