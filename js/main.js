@@ -21,8 +21,9 @@ function renderProductList(productArray) {
         card.innerHTML = `
       <img src="${tool.image}" alt="${tool.name}">
       <h3>${tool.name}</h3>
-      <p>${tool.description}</p>
-      <p class="price">${tool.price} грн</p>
+      <p><strong>Категорія:</strong> ${tool.category}</p>
+      <p><strong>Опис:</strong> ${tool.description}</p>
+      <p class="price"><strong>Ціна:</strong> ${tool.price} грн</p>
       <button onclick="addToCart(${tool.id})">Додати в корзину</button>
     `;
         productList.appendChild(card);
@@ -31,7 +32,10 @@ function renderProductList(productArray) {
 
 window.searchProducts = function () {
     const query = document.getElementById("search").value.toLowerCase();
-    const filtered = allTools.filter(tool => tool.name.toLowerCase().includes(query));
+    const filtered = allTools.filter(tool =>
+        tool.name.toLowerCase().includes(query) ||
+        tool.category.toLowerCase().includes(query)
+    );
     renderProductList(filtered);
 };
 

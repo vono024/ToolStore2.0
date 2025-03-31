@@ -50,6 +50,7 @@ function renderTable() {
         const row = document.createElement("tr");
         row.innerHTML = `
       <td>${tool.name}</td>
+      <td>${tool.category}</td>
       <td>${tool.price} грн</td>
       <td>
         <button class="admin-btn" onclick="deleteProduct(${tool.id})">Видалити</button>
