@@ -5,12 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Адмін-панель</title>
   <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
 </head>
 <body>
+<div class="background-overlay"></div>
+
 <header>
-  <nav>
-    <h1>Адмін-панель</h1>
-    <ul id="nav-links">
+  <nav class="navbar">
+    <h1 class="logo">Адмін-панель</h1>
+    <div class="burger" id="burger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <ul class="nav-links" id="nav-links">
       <li><a href="index.html">Головна</a></li>
       <li><a href="cart.html">Корзина</a></li>
       <li><a href="#" onclick="logout()">Вийти</a></li>
@@ -49,6 +57,10 @@
 
 <script type="module" src="../js/admin.js"></script>
 <script>
+  document.getElementById("burger").addEventListener("click", () => {
+    document.getElementById("nav-links").classList.toggle("active");
+  });
+
   function logout() {
     document.cookie = "admin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     location.href = "index.html";
