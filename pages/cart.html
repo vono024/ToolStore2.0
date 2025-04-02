@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Корзина</title>
   <link rel="stylesheet" href="../css/styles.css" />
-  <link rel="stylesheet" href="../css/responsive.css" />
 </head>
 <body>
 <div class="background-overlay"></div>
@@ -13,23 +12,31 @@
 <header>
   <nav class="navbar">
     <h1 class="logo">Магазин Інструментів</h1>
-    <div class="burger" id="burger">
+
+    <input type="checkbox" id="menu-toggle" />
+    <label for="menu-toggle" class="burger">
       <span></span>
       <span></span>
       <span></span>
-    </div>
-    <ul class="nav-links" id="nav-links">
+    </label>
+
+    <ul class="nav-links">
       <li><a href="index.html">Головна</a></li>
-      <li><a href="login.html" id="login-link">Авторизація</a></li>
+      <li><a href="login.html">Авторизація</a></li>
     </ul>
   </nav>
 </header>
 
 <div class="container">
   <h2>Ваша корзина</h2>
-  <div id="cart-items" class="product-list"></div>
-  <h3>Загальна сума: <span id="total-price">0 грн</span></h3>
-  <button onclick="checkout()">Оформити замовлення</button>
+
+  <div class="cart-wrapper">
+    <div id="cart-items" class="product-list"></div>
+    <div class="cart-summary">
+      <h3>Загальна сума: <span id="total-price">0 грн</span></h3>
+      <button onclick="checkout()">Оформити замовлення</button>
+    </div>
+  </div>
 </div>
 
 <footer>
@@ -37,28 +44,5 @@
 </footer>
 
 <script type="module" src="../js/cart.js"></script>
-<script>
-  document.getElementById("burger").addEventListener("click", () => {
-    document.getElementById("nav-links").classList.toggle("active");
-  });
-
-  const cookies = document.cookie.split(";").map(c => c.trim());
-  const isAdmin = cookies.find(c => c.startsWith("admin=loggedin"));
-  const nav = document.getElementById("nav-links");
-
-  if (isAdmin) {
-    const adminItem = document.createElement("li");
-    adminItem.innerHTML = `<a href="admin.html">Адмін</a>`;
-    nav.insertBefore(adminItem, document.getElementById("login-link"));
-
-    const logoutItem = document.getElementById("login-link");
-    logoutItem.innerHTML = `<a href="#" onclick="logout()">Вийти</a>`;
-  }
-
-  function logout() {
-    document.cookie = "admin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    location.reload();
-  }
-</script>
 </body>
 </html>

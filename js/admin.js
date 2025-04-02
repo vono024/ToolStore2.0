@@ -1,67 +1,67 @@
 import tools from "./data.js";
 
-let customTools = JSON.parse(localStorage.getItem("customTools")) || [];
-const allTools = [...tools, ...customTools];
+let products = JSON.parse(localStorage.getItem("products")) || [...tools];
 
-document.addEventListener("DOMContentLoaded", () => {
-    const list = document.getElementById("admin-product-list");
-    if (list) renderTable();
+const form = document.getElementById("add-product-form");
+const tableBody = document.querySelector(".admin-table tbody");
 
-    const form = document.getElementById("add-product-form");
-    if (form) {
-        form.addEventListener("submit", (e) => {
-            e.preventDefault();
+function saveProducts() {
+    localStorage.setItem("products", JSON.stringify(products));
+}
 
-            const fileInput = document.getElementById("image");
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-
-            reader.onload = function (event) {
-                const imageDataUrl = event.target.result;
-
-                const newTool = {
-                    id: Date.now(),
-                    name: document.getElementById("name").value,
-                    category: document.getElementById("category").value,
-                    price: parseFloat(document.getElementById("price").value),
-                    image: imageDataUrl,
-                    description: document.getElementById("description").value
-                };
-
-                customTools.push(newTool);
-                localStorage.setItem("customTools", JSON.stringify(customTools));
-
-                form.reset();
-                renderTable();
-            };
-
-            if (file) {
-                reader.readAsDataURL(file);
-            }
-        });
-    }
-});
-
-function renderTable() {
-    const list = document.getElementById("admin-product-list");
-    list.innerHTML = "";
-
-    [...tools, ...customTools].forEach(tool => {
+function renderProductTable() {
+    tableBody.innerHTML = "";
+    products.forEach((product) => {
         const row = document.createElement("tr");
+
         row.innerHTML = `
-      <td>${tool.name}</td>
-      <td>${tool.category}</td>
-      <td>${tool.price} грн</td>
+      <td>${product.name}</td>
+      <td>${product.category}</td>
+      <td>${product.price} грн</td>
       <td>
-        <button class="admin-btn" onclick="deleteProduct(${tool.id})">Видалити</button>
+        <button class="admin-btn" onclick="deleteProduct(${product.id})">Видалити</button>
       </td>
     `;
-        list.appendChild(row);
+
+        tableBody.appendChild(row);
     });
 }
 
-window.deleteProduct = function(id) {
-    customTools = customTools.filter(item => item.id !== id);
-    localStorage.setItem("customTools", JSON.stringify(customTools));
-    renderTable();
+window.deleteProduct = function (id) {
+    products = products.filter(p => p.id !== id);
+    saveProducts();
+    renderProductTable();
 };
+
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const name = form.querySelector('input[name="name"]').value.trim();
+    const category = form.querySelector('input[name="category"]').value.trim();
+    const price = form.querySelector('input[name="price"]').value.trim();
+    const description = form.querySelector('textarea[name="description"]').value.trim();
+    const fileInput = form.querySelector('input[type="file"]');
+
+    if (!name || !category || !price || !fileInput.files[0]) {
+        alert("Заповніть всі поля та виберіть зображення");
+        return;
+    }
+
+    const imagePath = "../assets/images/" + fileInput.files[0].name;
+
+    const newProduct = {
+        id: Date.now(),
+        name,
+        category,
+        price: parseInt(price),
+        image: imagePath,
+        description
+    };
+
+    products.push(newProduct);
+    saveProducts();
+    renderProductTable();
+    form.reset();
+});
+
+document.addEventListener("DOMContentLoaded", renderProductTable);

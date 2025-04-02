@@ -1,54 +1,57 @@
-import tools from "./data.js";
-import { addToCart } from "./cart.js";
+import tools from './data.js';
 
-const customTools = JSON.parse(localStorage.getItem("customTools")) || [];
-const allTools = [...tools, ...customTools];
+let products = JSON.parse(localStorage.getItem("products")) || [...tools];
 
-document.addEventListener("DOMContentLoaded", () => {
-    const productList = document.getElementById("product-list");
-    const searchInput = document.getElementById("search");
+const productList = document.getElementById("product-list");
+const searchInput = document.getElementById("search");
 
-    if (productList) {
-        renderProductList(allTools);
-    }
-
-    if (searchInput) {
-        searchInput.addEventListener("input", () => {
-            const query = searchInput.value.toLowerCase().trim();
-
-            const filtered = allTools.filter(tool =>
-                tool.name.toLowerCase().includes(query) ||
-                tool.category.toLowerCase().includes(query) ||
-                tool.description.toLowerCase().includes(query)
-            );
-
-            renderProductList(filtered);
-        });
-    }
-});
-
-function renderProductList(productArray) {
-    const productList = document.getElementById("product-list");
+function renderProducts(filteredProducts = products) {
     productList.innerHTML = "";
 
-    if (productArray.length === 0) {
-        productList.innerHTML = `<p class="no-results">Нічого не знайдено 😕</p>`;
+    if (filteredProducts.length === 0) {
+        productList.innerHTML = '<p class="no-results">Товарів не знайдено</p>';
         return;
     }
 
-    productArray.forEach(tool => {
-        const card = document.createElement("div");
-        card.className = "product";
-        card.innerHTML = `
-      <img src="${tool.image}" alt="${tool.name}">
-      <h3>${tool.name}</h3>
-      <p><strong>Категорія:</strong> ${tool.category}</p>
-      <p><strong>Опис:</strong> ${tool.description}</p>
-      <p class="price"><strong>Ціна:</strong> ${tool.price} грн</p>
-      <button onclick="addToCart(${tool.id})">Додати в корзину</button>
+    filteredProducts.forEach(product => {
+        const productCard = document.createElement("div");
+        productCard.classList.add("product");
+
+        productCard.innerHTML = `
+      <img src="${product.image}" alt="${product.name}">
+      <h3>${product.name}</h3>
+      <p>Категорія: ${product.category}</p>
+      <p>Опис: ${product.description}</p>
+      <p class="price">Ціна: ${product.price} грн</p>
+      <button onclick="addToCart(${product.id})">Додати в корзину</button>
     `;
-        productList.appendChild(card);
+
+        productList.appendChild(productCard);
     });
 }
 
+function addToCart(id) {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const product = products.find(p => p.id === id);
+    if (product) {
+        cart.push(product);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        alert(`"${product.name}" додано до корзини`);
+    }
+}
+
 window.addToCart = addToCart;
+
+searchInput.addEventListener("input", () => {
+    const query = searchInput.value.toLowerCase();
+    const filtered = products.filter(product =>
+        product.name.toLowerCase().includes(query) ||
+        product.category.toLowerCase().includes(query) ||
+        product.description.toLowerCase().includes(query)
+    );
+    renderProducts(filtered);
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    renderProducts();
+});

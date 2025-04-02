@@ -1,54 +1,60 @@
 import tools from "./data.js";
 
+let products = JSON.parse(localStorage.getItem("products")) || [...tools];
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-export function addToCart(id) {
-    const tool = tools.find(item => item.id === id);
-    if (tool) {
-        cart.push(tool);
-        localStorage.setItem("cart", JSON.stringify(cart));
-        alert(`${tool.name} додано до корзини!`);
-    }
+const cartItemsContainer = document.getElementById("cart-items");
+const totalPriceElement = document.getElementById("total-price");
+
+function saveCart() {
+    localStorage.setItem("cart", JSON.stringify(cart));
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    const cartItems = document.getElementById("cart-items");
-    const totalPrice = document.getElementById("total-price");
+function renderCart() {
+    cartItemsContainer.innerHTML = "";
+    let total = 0;
 
-    if (cartItems && totalPrice) {
-        cartItems.innerHTML = "";
-        let total = 0;
-
-        cart.forEach((item, index) => {
-            const div = document.createElement("div");
-            div.className = "cart-item";
-            div.innerHTML = `
-                <img src="${item.image}" alt="${item.name}">
-                <p>${item.name} - ${item.price} грн</p>
-                <button onclick="removeFromCart(${index})">Видалити</button>
-            `;
-            cartItems.appendChild(div);
-            total += item.price;
-        });
-
-        totalPrice.textContent = `${total} грн`;
+    if (cart.length === 0) {
+        cartItemsContainer.innerHTML = `<p class="no-results">Корзина порожня</p>`;
+        totalPriceElement.textContent = "0 грн";
+        return;
     }
-});
 
-window.removeFromCart = function(index) {
+    cart.forEach((product, index) => {
+        const productCard = document.createElement("div");
+        productCard.classList.add("product");
+
+        productCard.innerHTML = `
+      <img src="${product.image}" alt="${product.name}">
+      <h3>${product.name}</h3>
+      <p>Категорія: ${product.category}</p>
+      <p>Опис: ${product.description}</p>
+      <p class="price">Ціна: ${product.price} грн</p>
+      <button onclick="removeFromCart(${index})">Видалити</button>
+    `;
+
+        total += parseFloat(product.price);
+        cartItemsContainer.appendChild(productCard);
+    });
+
+    totalPriceElement.textContent = `${total} грн`;
+}
+
+window.removeFromCart = function (index) {
     cart.splice(index, 1);
-    localStorage.setItem("cart", JSON.stringify(cart));
-    location.reload();
+    saveCart();
+    renderCart();
 };
 
 window.checkout = function () {
     if (cart.length === 0) {
-        alert("Корзина порожня!");
+        alert("Корзина порожня");
         return;
     }
-
-    alert("Дякуємо за замовлення!");
+    alert("Замовлення оформлено! Дякуємо!");
     cart = [];
-    localStorage.removeItem("cart");
-    location.reload();
+    saveCart();
+    renderCart();
 };
+
+document.addEventListener("DOMContentLoaded", renderCart);
