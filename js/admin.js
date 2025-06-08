@@ -3,7 +3,7 @@ import tools from "./data.js";
 let products = JSON.parse(localStorage.getItem("products")) || [...tools];
 
 const form = document.getElementById("add-product-form");
-const tableBody = document.querySelector(".admin-table tbody");
+const tableBody = document.querySelector(".admin-product-list");
 
 function saveProducts() {
     localStorage.setItem("products", JSON.stringify(products));
@@ -36,11 +36,11 @@ window.deleteProduct = function (id) {
 form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const name = form.querySelector('input[name="name"]').value.trim();
-    const category = form.querySelector('input[name="category"]').value.trim();
-    const price = form.querySelector('input[name="price"]').value.trim();
-    const description = form.querySelector('textarea[name="description"]').value.trim();
-    const fileInput = form.querySelector('input[type="file"]');
+    const name = form.querySelector('[name="name"]').value.trim();
+    const category = form.querySelector('[name="category"]').value.trim();
+    const price = form.querySelector('[name="price"]').value.trim();
+    const description = form.querySelector('[name="description"]').value.trim();
+    const fileInput = form.querySelector('[name="image"]');
 
     if (!name || !category || !price || !fileInput.files[0]) {
         alert("Заповніть всі поля та виберіть зображення");
